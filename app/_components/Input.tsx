@@ -15,7 +15,7 @@ export default function Input({label, placeholder, defaultValue, type = "text", 
         autoComplete='off'
         name={label}
         type={type}
-        placeholder={label}
+        placeholder={placeholder}
         defaultValue={defaultValue} 
     />
   )

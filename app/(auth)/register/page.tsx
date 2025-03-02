@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useActionState, useState } from "react";
 import CloseEyeSVG from '../../_assets/CloseEyeSVG';
 import OpenEyeSVG from '../../_assets/OpenEyeSVG';
-import { login, register } from '@/app/_actions/user.action';
+import { register } from '@/app/_actions/user.action';
 import Input from '@/app/_components/Input';
 import Loading_Dots from '@/app/_components/Loading_Dots';
 

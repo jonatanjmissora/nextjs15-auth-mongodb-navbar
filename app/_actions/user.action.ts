@@ -36,7 +36,7 @@ export const logout = async function () {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const register = async (prevState: ResponseType, formData: FormData) => {
 
-  let username = formData.get("username") as string
+  const username = formData.get("username") as string
   let userpassword = formData.get("userpassword") as string
 
   const registerResponse = {
@@ -55,9 +55,6 @@ export const register = async (prevState: ResponseType, formData: FormData) => {
     }
     return registerResponse
   }
-
-  const obj = {name: "hola", last: "manola"}
-  const obj2 = {...obj}
 
   // verificacion de nombre registrado
   const user = await getUserByName(username)
@@ -100,8 +97,8 @@ export const register = async (prevState: ResponseType, formData: FormData) => {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const login = async function (prevState: ResponseType, formData: FormData) {
 
-  let username = formData.get("username") as string
-  let userpassword = formData.get("userpassword") as string
+  const username = formData.get("username") as string
+  const userpassword = formData.get("userpassword") as string
 
   const loginResponse = {
     success: false,
@@ -110,7 +107,7 @@ export const login = async function (prevState: ResponseType, formData: FormData
   }
 
   // server-validation
-  const { success, data, error } = userSchema.safeParse({ username, userpassword })
+  const { success, error } = userSchema.safeParse({ username, userpassword })
   if (!success) {
     const { username: userError, userpassword: passwordError } = error.flatten().fieldErrors
     loginResponse.errors = { 
