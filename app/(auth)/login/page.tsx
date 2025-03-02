@@ -5,6 +5,8 @@ import { useActionState, useState } from "react";
 import CloseEyeSVG from '../../_assets/CloseEyeSVG';
 import OpenEyeSVG from '../../_assets/OpenEyeSVG';
 import { login } from '@/app/_actions/user.action';
+import Input from '@/app/_components/Input';
+import Loading_Dots from '@/app/_components/Loading_Dots';
 
 export default function LoginPage() {
 
@@ -14,33 +16,44 @@ export default function LoginPage() {
   return (
     <div className='w-[90%] sm:w-[20rem] h-full flex justify-center items-center'>
 
-      <form action={formAction} className='flex flex-col justify-center items-center gap-4 w-full sm:scale-75 2xl:scale-100'>
+      <form action={formAction} className='flex flex-col justify-center items-center gap-6 w-full sm:scale-75 2xl:scale-100'>
 
-        <h2 className='text-xl font-semibold text-left w-full'>Ya tienes una cuenta ? Ingresa</h2>
-        <input
-          className="input input-bordered bg-slate-200 w-full max-w-xs"
-          autoComplete='off'
-          name="username"
-          type="text"
-          placeholder="Usuario"
-          defaultValue={formState?.prevState?.username} />
-        <p className='text-orange-500 italic min-h-6'>{formState?.errors.username}</p>
-        <div className='relative flex items-center justify-center w-full'>
+        <h2 className='text-xl font-semibold text-left w-full'>Ingresa tus datos</h2>
+        
+        <div className='w-full flex flex-col gap-2'>
 
-          <input
-            className="input input-bordered bg-slate-200 w-full max-w-xs"
-            autoComplete='off'
-            name="userpassword"
-            type={showPassword ? "text" : "password"}
-            placeholder="Contraseña"
-            defaultValue={formState?.prevState?.userpassword} />
+          <Input 
+            label='username' 
+            placeholder="usuario"
+            defaultValue={formState?.prevState?.username} 
+            className='w-full'
+          />
+          
+          <p className='text-orange-500 italic min-h-6 text-right'>{formState?.errors.username}</p>
+          
+          <div className='relative flex items-center justify-center w-full'>
 
-          <button className="p-2 absolute right-4" type="button" onClick={() => setShowPassword(prev => !prev)}>
-            {showPassword ? <CloseEyeSVG className='size-6 pt-1 text-slate-700' currentColor='currentColor' /> : <OpenEyeSVG className='size-6 text-slate-700' currentColor='currentColor' />}
-          </button>
+            <Input 
+              label='userpassword' 
+              placeholder="contraseña"
+              defaultValue={formState?.prevState?.userpassword} 
+              className='w-full'
+              type={showPassword ? "text" : "password"}
+            />
+
+            <button className="p-2 absolute right-4" type="button" onClick={() => setShowPassword(prev => !prev)}>
+              {showPassword 
+                ? <CloseEyeSVG className='size-6 pt-1 text-slate-700' currentColor='currentColor' /> 
+                : <OpenEyeSVG className='size-6 text-slate-700' currentColor='currentColor' />}
+            </button>
+
+          </div>
+          
+          <p className='text-orange-500 italic min-h-6 text-right'>{formState?.errors.userpassword}</p>
+        
         </div>
-        <p className='text-orange-500 italic min-h-6'>{formState?.errors.userpassword}</p>
-        <button className='btn btn-primary tracking-wide font-semibold w-full'>{isPending ? <span className="loading loading-spinner"></span> : "Ingresar"}</button>
+        
+        <button className='btn-primary w-full' disabled={isPending}>{isPending ? <Loading_Dots /> : "Ingresar"}</button>
 
         <div className="w-full flex justify-end">
           <Link className='link' href="/register">Registrate</Link>

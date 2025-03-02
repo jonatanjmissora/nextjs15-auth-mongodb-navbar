@@ -12,7 +12,7 @@ export type ResponseType = {
   success: boolean;
   prevState: { username: string, userpassword: string },
   errors: { username: string, userpassword: string }
-}
+} | null
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const getUserByName = async (name: string) => {
@@ -45,7 +45,7 @@ export const register = async (prevState: ResponseType, formData: FormData) => {
     errors: { username: "", userpassword: "" }
   }
 
-  // server-validation
+  // data-validation
   const { success, data, error } = userSchema.safeParse({ username, userpassword })
   if (!success) {
     const { username: userError, userpassword: passwordError } = error.flatten().fieldErrors
@@ -55,6 +55,9 @@ export const register = async (prevState: ResponseType, formData: FormData) => {
     }
     return registerResponse
   }
+
+  const obj = {name: "hola", last: "manola"}
+  const obj2 = {...obj}
 
   // verificacion de nombre registrado
   const user = await getUserByName(username)
@@ -68,18 +71,28 @@ export const register = async (prevState: ResponseType, formData: FormData) => {
   const salt = bcrypt.genSaltSync(10)
   userpassword = bcrypt.hashSync(userpassword, salt)
 
+  let redirectPath = null
+
   try {
     //insertar en DB
     const res = await insertUser(data)
     if (!res.insertedId.toString()) {
+      registerResponse.errors.username = ""
       registerResponse.errors.userpassword = "Error en el servidor"
       return registerResponse
     }
     await setUserToCookie(username, res.insertedId.toString())
-    redirect("/")
+    console.log("HASTA ACA LLEGO")
+    redirectPath = "/"
   } catch (error) {
     registerResponse.errors.userpassword = getErrorMessage(error)
+    redirectPath = "/register"
     return registerResponse
+  }
+  finally {
+    if (redirectPath)
+      redirect(redirectPath)
+    else return registerResponse
   }
 
 }
@@ -118,12 +131,16 @@ export const login = async function (prevState: ResponseType, formData: FormData
   // verificacion de contraseña almacenada
   const matchOrNot = bcrypt.compareSync(userpassword, user.userpassword)
   if (!matchOrNot) {
+    loginResponse.errors.username = ""
     loginResponse.errors.userpassword = "La contraseña no corresponde al usuario"
     return loginResponse
   }
 
   // si todo esta bien
-  await setUserToCookie(username, user._id.toString())
-  redirect("/")
+  if (user._id) {
+    await setUserToCookie(username, user._id.toString() || "")
+    redirect("/")
+  }
+  redirect("/login")
 
 }

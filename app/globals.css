@@ -22,3 +22,18 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-zinc-700 text-white border border-[#222] rounded-lg transition shadow tracking-wider font-semibold grow flex justify-center items-center
+  }
+
+  .input-text {
+    @apply px-6 py-3 bg-zinc-200 text-black border border-[#222] rounded-lg shadow tracking-wider font-semibold text-center
+  }
+
+  .link {
+    @apply text-blue-950 hover:text-blue-800 border-b border-blue-950 hover:border-blue-800
+  }
+}
