@@ -34,7 +34,7 @@ export default async function Header() {
               <button className='cursor-pointer'><UserSVG /></button>
             </form>
 
-            <span>{user?.username}</span>
+            <span>{user}</span>
 
           </div>
         )}
