@@ -79,7 +79,6 @@ export const register = async (prevState: ResponseType, formData: FormData) => {
       return registerResponse
     }
     await setUserToCookie(username, res.insertedId.toString())
-    console.log("HASTA ACA LLEGO")
     redirectPath = "/"
   } catch (error) {
     registerResponse.errors.userpassword = getErrorMessage(error)
